@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+    
+    body {
+    font-family: 'Poppins', sans-serif;
+    color: #0c0000;
+    transition: background 0.3s, color 0.3s;
+    position: relative;
+    z-index: 1;
+    } 
+
+    body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #a61918, #8e2de2, #00f2fe);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: -1;
+    }
+
+    body.dark {
+      background-color: #1a1a1a;
+      color: #f2f2f2;
+    }
+
+    #loader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #ff6b6b;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #progressBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 5px;
+      background: #ffcc00;
+      width: 0%;
+      z-index: 3000;
+    }
+
+    header {
+      background: #222;
+      color: white;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    nav {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ffd700;
+    }
+
+    .toggle-mode {
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: #fff;
+      transition: color 0.3s ease;
+    }
+
+    section {
+      padding: 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #home {
+      background: 
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+        url('https://images.unsplash.com/photo-1542393545-10f5cde2c810?w=400&auto=format&fit=crop&q=60') 
+        no-repeat center center/cover;
+      color: aquamarine;
+      padding: 100px 20px;
+    }
+
+    #home h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    #home p {
+      font-size: 1.2rem;
+      max-width: 700px;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: #ff6b6b;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: #e64949;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    ul {
+      list-style: disc;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #222;
+      color: #fff;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      background: #222;
+      padding: 15px 0;
+    }
+
+    .socials a {
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .socials a:hover {
+      transform: scale(1.2);
+    }
+
+    .socials a.whatsapp {
+      color: #25D366;
+    }
+
+    .socials a.linkedin {
+      color: #0077B5;
+    }
+
+    .socials a.github {
+      color: #ffffff;
+    }
+
+    #light-beam {
+      position: fixed;
+      width: 150px;
+      height: 150px;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+      border-radius: 50%;
+      mix-blend-mode: overlay;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="light-beam"></div>
+
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <div id="progressBar"></div>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="toggle-mode" id="modeToggle" title="Toggle Light/Dark Mode">
+        <i class="fas fa-moon"></i>
+      </div>
+    </nav>
+  </header>
+
+  <section id="home">
+    <b><h1>Welcome to My Portfolio</h1></b>
+    <em><strong><p>Hi, I'm Ernest Uwaoma, a passionate developer skilled in building Java and web-based applications.</p></strong></em>
+    <div class="btn-group">
+      <a href="#projects" class="btn">View My Work</a>
+      <a href="your-cv-link.pdf" class="btn" download>Download CV</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <b><h2>About Me</h2></b>
+    <strong><p>I love building cool projects, learning new technologies, and solving problems. Currently focused on frontend and back-end web development.</p></strong>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <ul>
+      <b><li>Java Arithmetic Calculator</li></b>
+      <strong><li>Responsive Landing Page</li></strong>
+      <strong><li>Earn From Tasks Application</li></strong>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <b><h2>Contact</h2></b>
+    <strong><p>Email: ernestuwaoma3@gmail.com</p></strong>
+  </section>
+
+  <div class="socials">
+    <a href="https://github.com/IceKeys854" class="github" target="_blank"><i class="fab fa-github"></i></a>
+    <a href="https://linkedin.com/in/ernest-uwaoma-183338344" class="linkedin" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="https://wa.me/2348120525256" class="whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+  </div>
+
+  <footer>
+    <p>© 2025 Ernest Uwaoma</p>
+  </footer>
+
+  <script>
+    window.addEventListener("load", () => {
+      document.getElementById("loader").style.display = "none";
+    });
+
+    const sections = document.querySelectorAll("section");
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY + window.innerHeight;
+      sections.forEach(section => {
+        if (scrollY > section.offsetTop + 100) {
+          section.classList.add("visible");
+        }
+      });
+
+      const progress = document.getElementById("progressBar");
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (scrollTop / docHeight) * 100;
+      progress.style.width = scrolled + "%";
+    });
+
+    const toggleBtn = document.getElementById("modeToggle");
+    const icon = toggleBtn.querySelector("i");
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      icon.classList.toggle("fa-moon");
+      icon.classList.toggle("fa-sun");
+    });
+
+    const lightBeam = document.getElementById("light-beam");
+    document.addEventListener("mousemove", (e) => {
+      lightBeam.style.left = `${e.pageX}px`;
+      lightBeam.style.top = `${e.pageY}px`;
+      lightBeam.style.right = `${e.pageY}px`;
+    });
+  </script>
+
+</body>
+</html>
